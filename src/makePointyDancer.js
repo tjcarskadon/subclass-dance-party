@@ -1,9 +1,17 @@
-var makePointyDancer = function (top, left, timeBetweenSteps) {
+var makeflippyDancer = function (top, left, timeBetweenSteps) {
   makeBlinkyDancer.call(this, top, left, timeBetweenSteps);
 
   this.$node = $('<span class="triangle"></span>');
   this.setPosition(top, left);
 };
 
-makePointyDancer.prototype = Object.create(makeBlinkyDancer.prototype);
-makePointyDancer.prototype.constructor = makePointyDancer; 
+makeflippyDancer.prototype = Object.create(makeDancer.prototype);
+makeflippyDancer.prototype.constructor = makeflippyDancer; 
+
+makeflippyDancer.prototype.solo = function () {
+  if ($(this).hasClass('solo')) {
+    this.$node.animate({
+      
+    }, 500);
+  }
+}

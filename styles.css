@@ -3,9 +3,9 @@ body, html{
 }
 body{
   margin: 0px;
-  background-color:#fff;
+  background-color:rgba(0,0,0,0.5);
   font-size: 18px;
-  background-image: url('img/stage.png');
+  background-image: url('img/pacmanBG4.jpg');
   background-size: 100% 100%;
   background-repeat: none;
 }
@@ -43,5 +43,19 @@ body, a:link, a:visited, a:active{
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;  
   border-bottom: 15px solid green;
+  position:absolute;
+}
+
+.solo {
+  width: 50;
+}
+
+.pacman {
+  position:absolute;
+}
+
+.ghost {
+  border:10px solid blue;
+  border-radius:10px;
   position:absolute;
 }

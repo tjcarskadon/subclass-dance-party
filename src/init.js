@@ -1,7 +1,6 @@
 $(document).ready(function() {
   window.dancers = [];
-  console.log(window.dancers);
-
+  
   $('.addDancerButton').on('click', function(event) {
     /* This function sets up the click handlers for the create-dancer
      * buttons on dancefloor.html. You should only need to make one small change to it.
@@ -32,45 +31,60 @@ $(document).ready(function() {
     window.dancers.push(dancer);
   });
 
-  for (var i = 0; i < 12; i++) {
-    var x;
-    if (i < 8) {
-      x = -70;
-    } else {
-      x = $('body').width() + 50;
-    }
-    var y = $('body').height() / 2;
-    var newDancer = new makeBlueDancer(y, x, 1000);
-    window.dancers.push(newDancer);
-    $('body').append(newDancer.$node);
-  }
-
-  $('.lineEmUpButton').on('click', function(event) {
-    var spacing = ($('body').width()) * .8 / (window.dancers.length + 1);
-    var x = (spacing + .2 * $('body').width()) / 2 + 5;
-    for (var i = 0; i < window.dancers.length; i++) {  
-      window.dancers[i].$node.animate({
-        left: x
-      }, 1000);  
-      x += spacing;
-    }
-    
-  });
-
-  $('.scramble').on('click', function(event) {
-    var firstDancer = window.dancers[0];
-    firstDancer.$node.animate({
-      left: "+=500"
-    }, 1000);
-  //   var y = $('body').height() * Math.random();
-  //   var x = $('body').width() * Math.random();
-
-  //   for (var i = 0; i < window.dancers.length; i++) {
-  //     window.dancers[i].setPosition(y, x);
-  //     y = $('body').height() * Math.random();
-  //     x = $('body').width() * Math.random();
+  // //refactor later to some function that can set initial position for us
+  // for (var i = 0; i < 12; i++) {
+  //   var x;
+  //   if (i < 6) {
+  //     x = -70;
+  //   } else {
+  //     x = $('body').width() + 50;
   //   }
-  });
+  //   var y = $('body').height() / 2;
+  //   var newDancer = new makeBlueDancer(y, x, 1000);
+  //   window.dancers.push(newDancer);
+  //   $('body').append(newDancer.$node);
+  // }
+
+  // var line = function() {
+  //   var spacing = ($('body').width()) * .8 / (window.dancers.length + 1);
+  //   var x = (spacing + .2 * $('body').width()) / 2 + 5;
+  //   for (var i = 0; i < window.dancers.length; i++) {  
+  //     window.dancers[i].$node.animate({
+  //       left: x,
+  //       height: 200
+  //     }, 1000);  
+  //     x += spacing;
+  //   }
+  // };
+
+  // $('.lineEmUpButton').on('click', line);
+  // // $('.lineEmUpButton').on('click',function(){
+
+  // $('body').on('click', '.blue', function() {
+  //   if ($(this).hasClass('solo')) {
+  //     line();
+  //     $(this).removeClass('solo');
+  //   } else {
+  //     $(this).addClass('solo');
+  //     $(this).animate({
+  //       left: $('body').width() / 2,
+  //       height: 400
+  //     }, 1000);
+  //   }
+  // });
+
+  // $('.scramble').on('click', function(event) {
+  //   var randomDancer1 = window.dancers[Math.floor(Math.random() * 6)];
+  //   var randomDancer2 = window.dancers[Math.floor(Math.random() * 6) + 6];
+  //   randomDancer1.$node.animate({
+  //     left: $('body').width() / 2
+  //   }, 1000);
+  //   randomDancer2.$node.animate({
+  //     left: $('body').width() / 2 + 55
+  //   }, 1000);
+
+
+  // });
 
 
 });
