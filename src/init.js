@@ -32,26 +32,46 @@ $(document).ready(function() {
     window.dancers.push(dancer);
   });
 
-  $('.lineEmUpButton').on('click', function(event) {
-    var firstDancer = window.dancers[0];
-    var y = $('body').height() / 2;
-    var x = $('body').width() * 0.05;
-    firstDancer.setPosition(y, x);
-
-    for (var i = 1; i < window.dancers.length; i++) {
-      window.dancers[i].setPosition(y, x += 50);
+  for (var i = 0; i < 12; i++) {
+    var x;
+    if (i < 8) {
+      x = -70;
+    } else {
+      x = $('body').width() + 50;
     }
+    var y = $('body').height() / 2;
+    var newDancer = new makeBlueDancer(y, x, 1000);
+    window.dancers.push(newDancer);
+    $('body').append(newDancer.$node);
+  }
+
+  $('.lineEmUpButton').on('click', function(event) {
+    var spacing = ($('body').width()) * .8 / (window.dancers.length + 1);
+    var x = (spacing + .2 * $('body').width()) / 2 + 5;
+    for (var i = 0; i < window.dancers.length; i++) {  
+      window.dancers[i].$node.animate({
+        left: x
+      }, 1000);  
+      x += spacing;
+    }
+    
   });
 
   $('.scramble').on('click', function(event) {
-    var y = $('body').height() * Math.random();
-    var x = $('body').width() * Math.random();
+    var firstDancer = window.dancers[0];
+    firstDancer.$node.animate({
+      left: "+=500"
+    }, 1000);
+  //   var y = $('body').height() * Math.random();
+  //   var x = $('body').width() * Math.random();
 
-    for (var i = 0; i < window.dancers.length; i++) {
-      window.dancers[i].setPosition(y, x);
-      y = $('body').height() * Math.random();
-      x = $('body').width() * Math.random();
-    }
+  //   for (var i = 0; i < window.dancers.length; i++) {
+  //     window.dancers[i].setPosition(y, x);
+  //     y = $('body').height() * Math.random();
+  //     x = $('body').width() * Math.random();
+  //   }
   });
+
+
 });
 

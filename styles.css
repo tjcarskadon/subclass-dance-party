@@ -5,7 +5,8 @@ body{
   margin: 0px;
   background-color:#fff;
   font-size: 18px;
-  background-image: url('img/stage.jpg');
+  background-image: url('img/stage.png');
+  background-size: 100% 100%;
   background-repeat: none;
 }
 body, a:link, a:visited, a:active{
@@ -16,7 +17,7 @@ body, a:link, a:visited, a:active{
   float:right;
 }
 .topbar{
-  height:32px;
+  height:32px;                                                                                                                                                            
   background-color: #555;
 }
 .title{
@@ -30,6 +31,8 @@ body, a:link, a:visited, a:active{
 
 .blue{
   border: 10px solid blue;
+  height: 200px;
+  width: 50px;
   /*border-radius:10px;*/
   position:absolute;
 }
