@@ -6,4 +6,4 @@ var makePointyDancer = function (top, left, timeBetweenSteps) {
 };
 
 makePointyDancer.prototype = Object.create(makeBlinkyDancer.prototype);
-makePointyDancer.prototype.constructor = makePointyDantriangle;
+makePointyDancer.prototype.constructor = makePointyDancer; 
