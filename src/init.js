@@ -33,6 +33,17 @@ $(document).ready(function() {
     window.dancers.push(dancer);
   });
 
+//add start button
+  $('.logo').animate({
+    left: $('body').width() * .40,
+    top: $('body').height() * .45
+  }, 1500);
+
+//add play button
+  $('.play').animate({
+    left: $('body').width() * .46,
+    top: $('body').height() * .55
+  }, 1500);
 
   $('.makePacman').on('click', function() {
     var pacman = new makePacman($('body').height() / 2, $('body').width() + 50, 150 );
@@ -40,6 +51,7 @@ $(document).ready(function() {
     pacman.vx = pacman.speed * -1;
     console.log();
     pacman.vy = 0;
+    $('.menu').toggleClass('hidden');
     $('body').append(pacman.$node);
 
     //add ghosts and move them from left to center.

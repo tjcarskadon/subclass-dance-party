@@ -49,10 +49,10 @@ makeDancer.prototype.step = function() {
     //bottom boundry
     this.vx = this.driftCorrection;
     this.vy = this.speed * -1;
-    tclassCheck === 'pacman' && his.$node.css({transform: 'rotate(-90deg)'});
+    classCheck === 'pacman' && this.$node.css({transform: 'rotate(-90deg)'});
   }
-  console.log(this.vx);
-  console.log(this.vy);
+  // console.log(this.vx);
+  // console.log(this.vy);
 
 //constant motion 
   this.$node.animate({
