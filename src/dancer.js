@@ -29,7 +29,7 @@ makeDancer.prototype.step = function() {
     this.step();
   }.bind(this), this.timeBetweenSteps);
 
-  //boundry detectoin
+  //boundry detection
   if (this.x <= 0) {
     //left boundry
     this.vx = this.speed;

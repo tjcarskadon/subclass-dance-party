@@ -1,13 +1,12 @@
 makeGhost = function (top, left, timeBetweenSteps, imgTag) {
-  makeDancer.call(this, top, left, timeBetweenSteps);
+  makeDancer.call(this, top, left, 150);
   
   // variable to keep track of animation frame
   this.frame = 0;
   this.imgTag = imgTag;
   this.$node = $('<img class="ghost" src=' + '"' + imgTag + '"' + '>');
   this.setPosition(top, left);
-  this.vx = Math.floor(Math.random() * 100);
-  this.vy = Math.floor(Math.random() * 100);
+  this.stepCount = 0;
 };
 
 makeGhost.prototype = Object.create(makeDancer.prototype);
@@ -15,8 +14,10 @@ makeGhost.prototype.constructor = makeBlueDancer;
 
 makeGhost.prototype.step = function() {
   makeDancer.prototype.step.call(this);
-  this.vx = Math.floor(Math.random() * 100);
-  this.vy = Math.floor(Math.random() * 100);
-  
-  //this.$node.toggle();
+  if (this.stepCount % 5 === 0 || !this.stepCount) {
+    this.vx = Math.floor(Math.random() * 100) - 50;
+    this.vy = Math.floor(Math.random() * 100) - 50;
+  }
+
+  this.stepCount++;  
 };

@@ -17,9 +17,10 @@ makePacman.prototype.step = function() {
   makeDancer.prototype.step.call(this);
   var frames = ['img/pManWide.png', 'img/pManMiddle.png', 'img/pManClosed.png'];
   var pacmanNode = this.$node;
+  //animate mouth
   this.frame = this.frame > frames.length - 1 ? 0 : this.frame + 1; pacmanNode.attr('src', frames[this.frame]);
-  this.x = pacmanNode.offset().left;
-  this.y = pacmanNode.offset().top;
+  // this.x = pacmanNode.offset().left;
+  // this.y = pacmanNode.offset().top;
   
   //manage start position for pacman
   if (this.startFlag) {

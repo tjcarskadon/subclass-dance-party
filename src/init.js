@@ -41,7 +41,7 @@ $(document).ready(function() {
 
 //add play button
   $('.play').animate({
-    left: $('body').width() * .46,
+    left: $('body').width() * .48,
     top: $('body').height() * .55
   }, 1500);
 
@@ -59,7 +59,6 @@ $(document).ready(function() {
     pacman.vx = pacman.speed * -1;
     console.log();
     pacman.vy = 0;
-    gameOver();
     $('.menu').toggleClass('hidden');
     $('body').append(pacman.$node);
     //add ghosts and move them from left to center.
