@@ -54,8 +54,11 @@ body, a:link, a:visited, a:active{
   position:absolute;
 }
 
+.pacmanTop {
+  transform: rotate(90deg);
+}
+
 .ghost {
-  border:10px solid blue;
-  border-radius:10px;
   position:absolute;
+  height: 66px;
 }

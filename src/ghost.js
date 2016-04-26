@@ -1,9 +1,10 @@
-makeGhost = function (top, left, timeBetweenSteps) {
+makeGhost = function (top, left, timeBetweenSteps, imgTag) {
   makeDancer.call(this, top, left, timeBetweenSteps);
   
   // variable to keep track of animation frame
   this.frame = 0;
-  this.$node = $('<span class="ghost"></span>');
+  this.imgTag = imgTag;
+  this.$node = $('<img class="ghost" src=' + '"' + imgTag + '"' + '>');
   this.setPosition(top, left);
 };
 
