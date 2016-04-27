@@ -42,11 +42,17 @@ $(document).ready(function() {
   }, 1500);
 
 //add play button
+var callPlay = function() {
+  // if ($('.play').hasClass('hidden')) {
+  //    $('.play').toggleClass('hidden');
+  // }
   $('.play').animate({
     left: $('body').width() * .48,
     top: $('body').height() * .55
   }, 1500);
+};
 
+callPlay();
   //animate game over button l -> to center
   var gameOver = function () {
     //animate pacman's death
@@ -55,7 +61,34 @@ $(document).ready(function() {
       left: $('body').width() * .38,
       top: $('body').height() * .40
     }, 1500);
+    reset();
   }; 
+
+  //animate you win button to center
+  var youWin = function () {
+    document.getElementById('chomp').pause();
+
+    $('.winner').animate({
+      left: $('body').width() * .40,
+      top: $('body').height() * .40
+    }, 1500);
+    reset();
+  }; 
+
+  var reset = function() {
+    $('.play').attr('top', '2000px');
+
+    pellets.forEach(function(pellet) {
+      pellet.$node.remove();
+    });
+    ghosts.forEach(function(ghost) {
+      ghost.$node.remove();
+    });
+    ghosts = [];
+    pellets = [];
+    score = 0;
+    callPlay();
+  };
 
 
   var collisionDetection = function (obj1, obj2) {
@@ -83,10 +116,27 @@ $(document).ready(function() {
     pacman.$node.css({transform: 'rotate(180deg)'});
     pacman.vx = pacman.speed * -1;
     pacman.vy = 0;
-    $('.menu').toggleClass('hidden');
-    $('body').append(pacman.$node);
-    // pacman.step();
 
+    document.getElementById('start-music').play();
+    document.getElementById('chomp').play();
+     //patch for animation --- YUCK!!!!!
+    $('.play').animate({
+      left: $('body').width() * .48,
+      top: $('body').height()
+    }, 1500);
+    $('.logo').animate({
+      left: $('body').width() * .40,
+      top: -100
+    }, 1500);
+    $('body').append(pacman.$node);
+    $('.winner').animate({
+      left: $('body').width() * 1.1,
+      top: $('body').height() * .40
+    }, 1500);
+    $('.game-over').animate({
+      left: -800,
+      top: $('body').height() * .40
+    }, 1500);
     
     //create ghosts and add to the body
     for (var i = 0; i < ghostTags.length; i++) {
@@ -94,7 +144,6 @@ $(document).ready(function() {
       var y = $('body').height() / 2;
       var ghost = new makeGhost(y, x, 150, ghostTags[i]);
       ghost.startPosition = $('body').width() * 0.3 - 80 * i;
-      console.log(ghost.vx);
       ghosts.push(ghost);
       pacman.vx = pacman.speed * 1;
       $('body').append(ghost.$node);
@@ -138,6 +187,8 @@ $(document).ready(function() {
       for (var g = 0; g < ghosts.length; g++) {
         ghosts[g].dead = true;
       }
+      document.getElementById('chomp').pause();
+      document.getElementById('death').play();
         // pacman.$node.css({transform: 'rotate(-90deg)'});
       for (var i = 0; i <= pacman.deathFrames.length; i++) {
         setTimeout(function() {
@@ -153,7 +204,9 @@ $(document).ready(function() {
 
     var checkCollisions = function() {
       if (score === 40) {
-        //WIN
+        pacman.dead = true;
+        pacman.$node.remove();
+        youWin();
       }
 
       //pacman and ghosts
@@ -163,6 +216,7 @@ $(document).ready(function() {
           // pacman.vx = 0;
           // pacman.vy = 0;
           if (ghosts[i].vulnerable) {
+            document.getElementById('eat').play();
             ghosts[i].$node.remove();
             score += 10;
           } else {
@@ -180,6 +234,7 @@ $(document).ready(function() {
         if (collisionDetection(pacman, pellets[i])) {
           for (var j = 0; j < ghosts.length; j++) {
             ghosts[j].makeVulnerable();
+            document.getElementById('pellets').play();
             pellets[i].$node.remove();
           }
         }
@@ -207,16 +262,16 @@ $(document).ready(function() {
     checkCollisions();
 
     setInterval(function() { 
-      if (!pacman.dead) {
+      if (!pacman.dead && pellets.length < 6) {
         var powerPellet = new makeBlinkyDancer(
-          $('body').height() * Math.random(),
-          $('body').width() * Math.random(),
+          $('body').height() * Math.random() * 0.8 + $('body').height() * 0.1,
+          $('body').width() * Math.random() * 0.8 + $('body').width() * 0.1,
             500
           );
         $('body').append(powerPellet.$node);
         pellets.push(powerPellet);        
       }
-    }, 2000);
+    }, 5000);
   });
 });
 

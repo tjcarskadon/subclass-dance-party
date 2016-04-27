@@ -81,8 +81,20 @@ body, a:link, a:visited, a:active{
   top:  100%;
   left: 48%;
 }
+.play .hidden  {
+  display: none;
+  position: absolute;
+  top:  100%;
+  left: 48%;
+}
 .game-over {
   position: absolute;
   top: 40%;
   left: -800px;
+}
+
+.winner {
+  position: absolute;
+  top: 40%;
+  left: 110%; 
 }
