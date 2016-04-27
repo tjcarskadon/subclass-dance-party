@@ -1,6 +1,8 @@
 $(document).ready(function() {
   window.dancers = [];
+  var pellets = [];
   var ghosts = [];
+  var score = 0;
   var ghostTags = ['img/orangey.png', 'img/pinky.png', 'img/redy.png', 'img/whitey.png'];
   
   $('.addDancerButton').on('click', function(event) {
@@ -120,41 +122,67 @@ $(document).ready(function() {
         pacman.vx = pacman.driftCorrection;
         pacman.vy = pacman.speed;
         pacman.$node.css({transform: 'rotate(90deg)'});
+      } else if (event.which === 73) { // letter i
+        // cheat mode!
+        for (var j = 0; j < ghosts.length; j++) {
+          ghosts[j].makeVulnerable();
+        }
       } 
     });
 
     //pacman dies 
     var death = function () {
-      console.log("Calling death");
-      var deathFrames = ['img/dyingF0.png', 'img/dyingF1.png', 'img/dyingF2.png', 'img/dyingF3.png', 'img/dyingF4.png', 'img/dyingF5.png', 'img/dyingF6.png', 'img/dyingF7.png'];
+      // var deathFrames = ['img/dyingF0.png', 'img/dyingF1.png', 'img/dyingF2.png', 'img/dyingF3.png', 'img/dyingF5.png', 'img/dyingF6.png', 'img/dyingF7.png'];
       pacman.dead = true;
+      pacman.frame = 0;
       for (var g = 0; g < ghosts.length; g++) {
         ghosts[g].dead = true;
       }
-      for (var i = 0; i < deathFrames.length; i++) {
+        // pacman.$node.css({transform: 'rotate(-90deg)'});
+      for (var i = 0; i <= pacman.deathFrames.length; i++) {
         setTimeout(function() {
-          console.log("deathAnimation", i);
-          // debugger;
-          pacman.$node.attr('src', deathFrames[i]); 
-        }, 100 * i);
+          pacman.$node.attr('src', pacman.deathFrames[pacman.frame]);
+          pacman.frame++;
+          if (pacman.frame === 7) {
+            pacman.$node.remove();
+          } 
+        }, 200 * i);
       }
-      // pacman.$node.toggleClass('hidden');
       gameOver();
     };
 
     var checkCollisions = function() {
+      if (score === 40) {
+        //WIN
+      }
+
       //pacman and ghosts
       for (var i = 0; i < ghosts.length; i++) {
         if (collisionDetection(pacman, ghosts[i])) {
             //make pacman die
           // pacman.vx = 0;
           // pacman.vy = 0;
-          death();
-          break;
+          if (ghosts[i].vulnerable) {
+            ghosts[i].$node.remove();
+            score += 10;
+          } else {
+            death();
+            break;
+          }
         }
       }
       if (!pacman.dead) {
         setTimeout(checkCollisions, 10);
+      }
+
+      //powerPellet collision check
+      for (var i = 0; i < pellets.length; i++) {
+        if (collisionDetection(pacman, pellets[i])) {
+          for (var j = 0; j < ghosts.length; j++) {
+            ghosts[j].makeVulnerable();
+            pellets[i].$node.remove();
+          }
+        }
       }
 
       //ghosts and other ghosts
@@ -177,6 +205,18 @@ $(document).ready(function() {
     };
 
     checkCollisions();
+
+    setInterval(function() { 
+      if (!pacman.dead) {
+        var powerPellet = new makeBlinkyDancer(
+          $('body').height() * Math.random(),
+          $('body').width() * Math.random(),
+            500
+          );
+        $('body').append(powerPellet.$node);
+        pellets.push(powerPellet);        
+      }
+    }, 2000);
   });
 });
 

@@ -6,7 +6,11 @@ makeBlinkyDancer.prototype = Object.create(makeDancer.prototype);
 makeBlinkyDancer.prototype.constructor = makeBlinkyDancer;
 
 makeBlinkyDancer.prototype.step = function() {
-makeDancer.prototype.step.call(this);
+// makeDancer.prototype.step.call(this);
   
+  setTimeout(function() {
+      this.step();
+    }.bind(this), this.timeBetweenSteps);
+
   this.$node.toggle();
 };

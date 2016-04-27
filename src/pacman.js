@@ -10,7 +10,7 @@ var makePacman = function (top, left, timeBetweenSteps) {
   this.driftCorrection = 2.75;
   this.dead = false;
   this.frames = ['img/pManWide.png', 'img/pManMiddle.png', 'img/pManClosed.png'];
-  this.deathFrames = ['img/dyingF0.png', 'img/dyingF1.png', 'img/dyingF2.png', 'img/dyingF3.png', 'img/dyingF4.png', 'img/dyingF5.png', 'img/dyingF6.png', 'img/dyingF7.png', ];
+  this.deathFrames = ['img/dyingF0.png', 'img/dyingF1.png', 'img/dyingF2.png', 'img/dyingF3.png', 'img/dyingF5.png', 'img/dyingF6.png', 'img/dyingF7.png'];
 };
 
 makePacman.prototype = Object.create(makeDancer.prototype);

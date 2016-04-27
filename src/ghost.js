@@ -9,6 +9,7 @@ makeGhost = function (top, left, timeBetweenSteps, imgTag) {
   this.stepCount = 0;
   this.speed = 90;
   this.startPosition;
+  this.vulnerable = false;
 };
 
 makeGhost.prototype = Object.create(makeDancer.prototype);
@@ -16,6 +17,16 @@ makeGhost.prototype.constructor = makeBlueDancer;
 
 makeGhost.prototype.step = function() {
   makeDancer.prototype.step.call(this);
+
+  if (this.vulnerable) {
+    if (this.frame % 2 === 0) {
+      this.$node.attr('src', 'img/vGhostWhite.png');  
+    } else {
+      this.$node.attr('src', 'img/vGhostBlue.png');  
+    }
+    this.frame++;
+  }
+
   //manage start position for pacman
   if (this.startFlag) {
     if (this.x > this.startPosition) {
@@ -30,4 +41,13 @@ makeGhost.prototype.step = function() {
     }
     this.stepCount++;  
   }
+};
+
+makeGhost.prototype.makeVulnerable = function() {
+  this.$node.attr('src', 'img/vGhostWhite.png');
+  this.vulnerable = true;
+  setTimeout(function() {
+    this.vulnerable = false;
+    this.$node.attr('src', this.imgTag);
+  }.bind(this), 10000);
 };
