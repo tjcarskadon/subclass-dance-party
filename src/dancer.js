@@ -10,24 +10,53 @@ var makeDancer = function(top, left, timeBetweenSteps) {
   this.startFlag = true;
   this.speed = 70;
   this.driftCorrection = 0;
-
-  // now that we have defined the dancer object, we can start setting up important parts of it by calling the methods we wrote
-  // this one sets the position to some random default point within the body
+  this.dead = false;
   this.step();
   this.setPosition(top, left);
+  this.collisionTargets = [];
 };
 
+// makeDancer.prototype.addTargets = function(inputTargetArray) {
+//   this.collisionTargets.concat(inputTargetArray);
+// };
+
+// makeDancer.prototype.checkCollisions = function() {
+//   var collisionDetection = function (obj1, obj2) {
+//     var x1 = obj1.$node.offset().left;
+//     var x2 = obj2.$node.offset().left;
+//     var y1 = obj1.$node.offset().top;
+//     var y2 = obj2.$node.offset().top;
+//     var w1 = obj1.$node.width() + 3;
+//     var w2 = obj2.$node.width() + 3;
+//     var h1 = obj1.$node.height() + 3;
+//     var h2 = obj2.$node.height() + 3;
+//     if (x1 < x2 + w2 && 
+//       x1 + w1 > x2 &&
+//       y1 < y2 + h2 &&
+//       h1 + y1 > y2) {
+//       return true; 
+//     } else {
+//       return false;
+//     }
+//   };
+// };
+
 makeDancer.prototype.step = function() {
+
+  // this.checkCollisions();
+
   // the basic dancer doesn't do anything interesting at all on each step,
   // it just schedules the next step
   this.x = this.$node.offset().left;
   this.y = this.$node.offset().top;
   var classCheck = this.$node.attr('class');
-  console.log(this.class);
+  //console.log(this.class);
 
-  setTimeout(function() {
-    this.step();
-  }.bind(this), this.timeBetweenSteps);
+  if (!this.dead) {
+    setTimeout(function() {
+      this.step();
+    }.bind(this), this.timeBetweenSteps);
+  }
 
   //boundry detection
   if (this.x <= 0) {
@@ -71,4 +100,6 @@ makeDancer.prototype.setPosition = function(top, left) {
   };
   this.$node.css(styleSettings);
 };
+
+
 

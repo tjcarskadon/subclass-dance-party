@@ -8,6 +8,9 @@ var makePacman = function (top, left, timeBetweenSteps) {
   // this.startFlag = true;
   // this.speed = 70;
   this.driftCorrection = 2.75;
+  this.dead = false;
+  this.frames = ['img/pManWide.png', 'img/pManMiddle.png', 'img/pManClosed.png'];
+  this.deathFrames = ['img/dyingF0.png', 'img/dyingF1.png', 'img/dyingF2.png', 'img/dyingF3.png', 'img/dyingF4.png', 'img/dyingF5.png', 'img/dyingF6.png', 'img/dyingF7.png', ];
 };
 
 makePacman.prototype = Object.create(makeDancer.prototype);
@@ -15,8 +18,9 @@ makePacman.prototype.constructor = makePacman;
 
 makePacman.prototype.step = function() {
   makeDancer.prototype.step.call(this);
-  var frames = ['img/pManWide.png', 'img/pManMiddle.png', 'img/pManClosed.png'];
+  
   var pacmanNode = this.$node;
+  var frames = ['img/pManWide.png', 'img/pManMiddle.png', 'img/pManClosed.png'];
   //animate mouth
   this.frame = this.frame > frames.length - 1 ? 0 : this.frame + 1; pacmanNode.attr('src', frames[this.frame]);
   // this.x = pacmanNode.offset().left;

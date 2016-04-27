@@ -47,22 +47,56 @@ $(document).ready(function() {
 
   //animate game over button l -> to center
   var gameOver = function () {
+    //animate pacman's death
+
     $('.game-over').animate({
       left: $('body').width() * .38,
       top: $('body').height() * .40
     }, 1500);
   }; 
 
+
+  var collisionDetection = function (obj1, obj2) {
+    var x1 = obj1.$node.offset().left;
+    var x2 = obj2.$node.offset().left;
+    var y1 = obj1.$node.offset().top;
+    var y2 = obj2.$node.offset().top;
+    var w1 = obj1.$node.width() + 3;
+    var w2 = obj2.$node.width() + 3;
+    var h1 = obj1.$node.height() + 3;
+    var h2 = obj2.$node.height() + 3;
+    if (x1 < x2 + w2 && 
+      x1 + w1 > x2 &&
+      y1 < y2 + h2 &&
+      h1 + y1 > y2) {
+      return true; 
+    } else {
+      return false;
+    }
+  };
+
   $('.makePacman').on('click', function() {
-    var pacman = new makePacman($('body').height() / 2, $('body').width() + 50, 150 );
+    //make pacman
+    var pacman = new makePacman($('body').height() / 2, $('body').width() + 50, 150);
     pacman.$node.css({transform: 'rotate(180deg)'});
     pacman.vx = pacman.speed * -1;
-    console.log();
     pacman.vy = 0;
     $('.menu').toggleClass('hidden');
     $('body').append(pacman.$node);
-    //add ghosts and move them from left to center.
+    // pacman.step();
 
+    
+    //create ghosts and add to the body
+    for (var i = 0; i < ghostTags.length; i++) {
+      var x = -50 - 100 * i;
+      var y = $('body').height() / 2;
+      var ghost = new makeGhost(y, x, 150, ghostTags[i]);
+      ghost.startPosition = $('body').width() * 0.3 - 80 * i;
+      console.log(ghost.vx);
+      ghosts.push(ghost);
+      pacman.vx = pacman.speed * 1;
+      $('body').append(ghost.$node);
+    }
     // player input handler
     //arrow keys 37,38,39,40 clockwise from left
     $(document).on('keydown', function(event) {
@@ -78,82 +112,71 @@ $(document).ready(function() {
         pacman.$node.css({transform: 'rotate(-90deg)'});
       } else if (event.which === 39) {
         // right
-        pacman.vx = pacman.speed * -1;
+        pacman.vx = pacman.speed;
         pacman.vy = 0;
         pacman.$node.css({transform: 'rotate(0deg)'});
       } else if (event.which === 40) {
         // bottom
         pacman.vx = pacman.driftCorrection;
-        pacman.vy = pacman.speed * -1;
+        pacman.vy = pacman.speed;
         pacman.$node.css({transform: 'rotate(90deg)'});
       } 
     });
-    //create ghosts and add to the body
-    for (var i = 0; i < ghostTags.length; i++) {
-      var x = -50;
-      var y = $('body').height() / 2;
-      var ghost = new makeGhost(y, x, 1000, ghostTags[i]);
-      ghosts.push(ghost);
-      $('body').append(ghost.$node);
-    }
-    ghostEnter();
+
+    //pacman dies 
+    var death = function () {
+      console.log("Calling death");
+      var deathFrames = ['img/dyingF0.png', 'img/dyingF1.png', 'img/dyingF2.png', 'img/dyingF3.png', 'img/dyingF4.png', 'img/dyingF5.png', 'img/dyingF6.png', 'img/dyingF7.png'];
+      pacman.dead = true;
+      for (var g = 0; g < ghosts.length; g++) {
+        ghosts[g].dead = true;
+      }
+      for (var i = 0; i < deathFrames.length; i++) {
+        setTimeout(function() {
+          console.log("deathAnimation", i);
+          // debugger;
+          pacman.$node.attr('src', deathFrames[i]); 
+        }, 100 * i);
+      }
+      // pacman.$node.toggleClass('hidden');
+      gameOver();
+    };
+
+    var checkCollisions = function() {
+      //pacman and ghosts
+      for (var i = 0; i < ghosts.length; i++) {
+        if (collisionDetection(pacman, ghosts[i])) {
+            //make pacman die
+          // pacman.vx = 0;
+          // pacman.vy = 0;
+          death();
+          break;
+        }
+      }
+      if (!pacman.dead) {
+        setTimeout(checkCollisions, 10);
+      }
+
+      //ghosts and other ghosts
+      for (var i = 0; i < ghosts.length; i++) {
+        for (var j = 0; j < ghosts.length; j++) {
+          if (i !== j) {
+            if (collisionDetection(ghosts[i], ghosts[j])) {
+              var newVx = Math.floor(Math.random() * 15);
+              var newVy = Math.floor(Math.random() * 30);
+              ghosts[i].vx = newVx;
+              ghosts[i].vy = newVy;
+              ghosts[i].stepCount = 1;
+              ghosts[j].vx = -1 * newVx;
+              ghosts[j].vy = -1 * newVy;
+              ghosts[j].stepCount = 1;
+            }
+          }
+        }
+      }
+    };
+
+    checkCollisions();
   });
-  //brings ghosts from the left side of the screen at start
-  var ghostEnter = function() {
-    var spacing = ($('body').width()) * .25 / (ghosts.length + 1);
-    var x = (spacing + .65 * $('body').width()) / 2 + 5;
-    for (var i = 0; i < ghosts.length; i++) {  
-      ghosts[i].$node.animate({
-        left: x,
-      }, 2000);  
-      x += spacing;
-    }
-  };
-
-// UNUSED FUNCTIONS FROM OUR FIRST TRY BLEOW THIS LINE
-
-//this lines up all the nodes on the page
-  // var line = function() {
-  //   var spacing = ($('body').width()) * .8 / (window.dancers.length + 1);
-  //   var x = (spacing + .2 * $('body').width()) / 2 + 5;
-  //   for (var i = 0; i < window.dancers.length; i++) {  
-  //     window.dancers[i].$node.animate({
-  //       left: x,
-  //       height: 200
-  //     }, 1000);  
-  //     x += spacing;
-  //   }
-  // };
-
-  // $('.lineEmUpButton').on('click', line);
-  // // $('.lineEmUpButton').on('click',function(){
-
-  // $('body').on('click', '.blue', function() {
-  //   if ($(this).hasClass('solo')) {
-  //     line();
-  //     $(this).removeClass('solo');
-  //   } else {
-  //     $(this).addClass('solo');
-  //     $(this).animate({
-  //       left: $('body').width() / 2,
-  //       height: 400
-  //     }, 1000);
-  //   }
-  // });
-
-  // $('.scramble').on('click', function(event) {
-  //   var randomDancer1 = window.dancers[Math.floor(Math.random() * 6)];
-  //   var randomDancer2 = window.dancers[Math.floor(Math.random() * 6) + 6];
-  //   randomDancer1.$node.animate({
-  //     left: $('body').width() / 2
-  //   }, 1000);
-  //   randomDancer2.$node.animate({
-  //     left: $('body').width() / 2 + 55
-  //   }, 1000);
-
-
-  // });
-
-
 });
 
